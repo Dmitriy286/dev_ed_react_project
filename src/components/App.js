@@ -5,7 +5,7 @@ import SingleProduct from "../components/single product components/SingleProduct
 import Footer from "./footer components/Footer";
 import Products from "./all products components/Products";
 import ProductService from '../services/ProductService'
-import {ImmutableProductListContext, FilterArrayContext,ProductListContext} from "../services/Context";
+import {ImmutableProductListContext, FilterArrayContext, ProductListContext} from "../services/Context";
 import ProductList from "../services/ProductList";
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
         console.log("Вызов геттера")
         ProductService.getAllProducts().then((response) => {
             setImmutableProductList(response.data);
-        }).catch(error =>{
+        }).catch(error => {
             console.log(error);
         })
     }
@@ -36,29 +36,29 @@ function App() {
         setSearchField(e.target.value);
     };
 
-    const {productArray}=useMemo(()=>{
+    const {productArray} = useMemo(() => {
         let productArray = [];
-        productArray.push( ProductList.search(immutableProductList,searchField))
+        productArray.push(ProductList.search(immutableProductList, searchField))
         return {productArray}
-    },[searchField])
-
+    }, [searchField])
     return (
         <ImmutableProductListContext.Provider value={{immutableProductList}}>
             <ProductListContext.Provider value={{productArray}}>
-            <FilterArrayContext.Provider value={{filterArray, setFilterArray}}>
+                <FilterArrayContext.Provider value={{filterArray, setFilterArray}}>
                     <div className="container">
                         <Router>
                             <Header countProductInBasket={countProductInBasket} searchField={searchField}
-                                 handleChange={handleChange}/>
+                                    handleChange={handleChange}/>
                             <Routes>
-                                <Route path="/product/:id" element={<SingleProduct countProductInBasket={countProductInBasket}
-                                    setCountProductInBasket={setCountProductInBasket}/>}/>
+                                <Route path="/product/:id"
+                                       element={<SingleProduct countProductInBasket={countProductInBasket}
+                                                               setCountProductInBasket={setCountProductInBasket}/>}/>
                                 <Route path="/:category/:subcategory" element={<Products searchField={searchField}
-                                     />}/>
+                                />}/>
                                 <Route path="/:category" element={<Products searchField={searchField}
-                                     />}/>
+                                />}/>
                                 <Route path="/" element={<Products searchField={searchField}
-                                     />}/>
+                                />}/>
                             </Routes>
                             <Footer/>
                         </Router>
@@ -68,5 +68,6 @@ function App() {
         </ImmutableProductListContext.Provider>
     )
 }
+
 
 export default App;

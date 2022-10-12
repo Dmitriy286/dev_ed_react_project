@@ -8,6 +8,7 @@ import avatar1 from '../../images/avatar.jpg'
 import {FilterArrayContext, ImmutableProductListContext, PriceFilterArrayContext} from "../../services/Context";
 import {useParams} from "react-router-dom";
 import ProductList from "../../services/ProductList";
+import ProductService from "../../services/ProductService";
 
 
 export default function Header(props) {
@@ -21,8 +22,8 @@ export default function Header(props) {
     const {priceDelta} = useContext(PriceFilterArrayContext);
     const {category, subcategory} = useParams();
 
-    console.log(category)
-    console.log(subcategory)
+    const [testRESTAPIArray, setTestRESTAPIArray] = useState("");
+
 
     function print1() {
         console.log(immutableProductList)
@@ -36,6 +37,21 @@ export default function Header(props) {
         console.log(priceDelta)
     }
 
+    function print5() {
+        let userId = 97 //в перспективе заменить на метод получения id текущего пользователя
+        ProductService.getRecommendedProducts(userId)
+            .then(result => result.json())
+            .then(currentData => setTestRESTAPIArray(currentData));
+    }
+    console.log("data 2: " + testRESTAPIArray)
+
+    function print6() {
+        let basketArray = [3, 6, 35]
+        ProductService.getRecommendedProductsFromBasket(basketArray)
+            .then(result => result.json())
+            .then(currentData => setTestRESTAPIArray(currentData));
+
+    }
 
 
     return (
@@ -65,6 +81,8 @@ export default function Header(props) {
                 <button onClick={print1}>Неизменямый список</button>
                 <button onClick={print3}>Фильтры</button>
                 <button onClick={print4}>Диапазон цен</button>
+                <button onClick={print5}>Тест оркестратора</button>
+                <button onClick={print6}>Рекомендация для корзины</button>
                 <a href="http://localhost:3000/">Все продукты</a>
             </nav>
         </header>
